@@ -1,0 +1,6 @@
+course_id,file,midterm_pct,final_pct,quiz_pct,assignment_pct,presentation_pct,attendance_pct,team_project_pct
+1,course_1.txt,,,,,,,
+2,course_2.txt,,,,,,,
+3,course_3.txt,,16.0,,16.0,,,
+4,course_4.txt,,,,,,,
+5,course_5.txt,,,,,,,

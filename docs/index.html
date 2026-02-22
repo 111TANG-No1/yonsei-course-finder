@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yonsei Course Finder (OCR Demo)</title>
+  <style>
+    :root { --bg:#f6f7fb; --card:#fff; --text:#111827; --muted:#6b7280; --line:#e5e7eb; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "PingFang SC", "Noto Sans CJK SC", Arial; background:var(--bg); color:var(--text); }
+    .wrap { max-width: 1100px; margin: 28px auto; padding: 0 16px; }
+    h1 { margin: 0 0 8px; font-size: 40px; letter-spacing: -0.5px; }
+    .sub { color: var(--muted); margin-bottom: 14px; }
+    .pill { display:inline-block; padding: 4px 10px; border:1px solid var(--line); border-radius: 999px; background:#fff; margin-left:6px; font-size: 12px; }
+    .card { background: var(--card); border:1px solid var(--line); border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .toolbar { padding: 14px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    input, select, button { font-size: 14px; padding: 10px 12px; border-radius: 10px; border:1px solid var(--line); background:#fff; }
+    input { min-width: 280px; flex: 1; }
+    button { cursor:pointer; font-weight:600; }
+    button.primary { background:#111827; color:#fff; border-color:#111827; }
+    .meta { padding: 0 14px 14px; color: var(--muted); display:flex; gap:14px; flex-wrap:wrap; }
+    .dot { display:inline-block; width:9px; height:9px; border-radius:50%; background:#16a34a; margin-right:6px; vertical-align:middle; }
+    table { width:100%; border-collapse: separate; border-spacing: 0; }
+    th, td { text-align:left; padding: 12px 14px; border-top:1px solid var(--line); vertical-align:top; }
+    th { color: var(--muted); font-weight: 600; background: #fafafa; }
+    tr.data:hover { background:#fbfbfe; }
+    .cid { width: 90px; }
+    .badge { display:inline-flex; width:28px; height:28px; align-items:center; justify-content:center; border-radius:999px; border:1px solid #bfe3ff; color:#0369a1; background:#eaf6ff; font-weight:700; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { display:inline-flex; align-items:center; gap:6px; padding: 6px 10px; border-radius: 999px; background:#eef2ff; border:1px solid #dbeafe; color:#1e3a8a; font-weight:700; font-size: 13px; }
+    .muted { color: var(--muted); }
+    .filelink { color:#0f172a; text-decoration:none; font-weight:600; }
+    .snippet { color:#111827; font-size: 13px; line-height: 1.35; }
+    details { margin-top: 10px; }
+    .panel { margin-top: 12px; padding: 14px; border-top:1px solid var(--line); }
+    pre { white-space: pre-wrap; word-break: break-word; background:#0b1020; color:#e5e7eb; padding: 14px; border-radius: 12px; overflow:auto; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Yonsei Course Finder (OCR Demo)</h1>
+    <div class="sub">
+      数据来源：延世课程“计划”弹窗截图 → OCR → 结构化
+      <span class="pill">data/course_grading.csv</span>
+      <span class="pill">data/override.csv</span>
+      <span class="pill">data/merged/course_*.txt</span>
+    </div>
+
+    <div class="card">
+      <div class="toolbar">
+        <input id="q" placeholder="搜索：course_id / 文件名 / OCR 片段关键词" />
+        <select id="item">
+          <option value="all">考核项：全部</option>
+          <option value="midterm_pct">期中</option>
+          <option value="final_pct">期末</option>
+          <option value="quiz_pct">小测</option>
+          <option value="assignment_pct">作业</option>
+          <option value="presentation_pct">展示</option>
+          <option value="attendance_pct">出勤</option>
+          <option value="team_project_pct">团队项目</option>
+        </select>
+        <select id="th">
+          <option value="0">阈值：>= 0%</option>
+          <option value="1">阈值：>= 1%</option>
+          <option value="5">阈值：>= 5%</option>
+          <option value="10" selected>阈值：>= 10%</option>
+          <option value="15">阈值：>= 15%</option>
+        </select>
+        <select id="show">
+          <option value="all" selected>显示：全部课程</option>
+          <option value="only_with_any">显示：仅有解析结果</option>
+        </select>
+        <button class="primary" id="reload">重新加载</button>
+        <button id="reset">重置筛选</button>
+      </div>
+
+      <div class="meta">
+        <div><span class="dot"></span>已加载 <b id="loadedN">-</b> 行</div>
+        <div>匹配：<b id="matchN">-</b> 条</div>
+        <div class="muted">提示：请用 <b>python -m http.server 8010</b> 启动，并用浏览器访问 <b>http://localhost:8010/web.html</b></div>
+      </div>
+
+      <div style="overflow:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th class="cid">course_id</th>
+              <th>考核占比（解析结果）</th>
+              <th>原始文件 / 原文片段（OCR）</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <details id="detail">
+          <summary><b>点击某一行后，这里会显示该课的 OCR 全文</b></summary>
+          <div class="hint">如果这里为空：说明对应的 data/merged/course_X.txt 没生成或路径不对。</div>
+          <pre id="fulltext">（等待选择课程）</pre>
+        </details>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const LABELS = [
+    ["midterm_pct","期中"],
+    ["final_pct","期末"],
+    ["quiz_pct","小测"],
+    ["assignment_pct","作业"],
+    ["presentation_pct","展示"],
+    ["attendance_pct","出勤"],
+    ["team_project_pct","团队项目"],
+  ];
+
+  function parseCSV(text) {
+    // 够用的简单 CSV 解析（不处理复杂转义）
+    const lines = text.trim().split(/\r?\n/);
+    const headers = lines[0].split(",").map(s=>s.trim());
+    const rows = [];
+    for (let i=1;i<lines.length;i++){
+      if (!lines[i].trim()) continue;
+      const cols = lines[i].split(","); // 你的数据很干净，够用
+      const obj = {};
+      headers.forEach((h,idx)=> obj[h] = (cols[idx] ?? "").trim());
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  function toNum(v) {
+    if (v === null || v === undefined) return null;
+    const s = String(v).trim();
+    if (!s) return null;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function mergeBaseAndOverride(baseRows, overrideRows) {
+    const ov = new Map(overrideRows.map(r => [String(r.course_id), r]));
+    return baseRows.map(r => {
+      const id = String(r.course_id);
+      const o = ov.get(id) || {};
+      const out = {...r};
+      // override 非空就覆盖
+      for (const [k,_label] of LABELS) {
+        if (o[k] !== undefined && String(o[k]).trim() !== "") out[k] = o[k];
+      }
+      // 统一转数字
+      for (const [k,_label] of LABELS) out[k] = toNum(out[k]);
+      return out;
+    });
+  }
+
+  async function fetchText(path) {
+    const res = await fetch(path, {cache:"no-store"});
+    if (!res.ok) throw new Error(`${path} HTTP ${res.status}`);
+    return await res.text();
+  }
+
+  function buildChips(row, threshold, itemKey) {
+    const chips = [];
+    const pushChip = (label, val) => {
+      chips.push(`<span class="chip">${label}：${val.toFixed(1)}%</span>`);
+    };
+
+    for (const [k,label] of LABELS) {
+      const v = row[k];
+      if (v === null) continue;
+      if (itemKey !== "all" && k !== itemKey) continue;
+      if (v >= threshold) pushChip(label, v);
+    }
+    return chips.join("");
+  }
+
+  function anyPct(row) {
+    return LABELS.some(([k,_]) => row[k] !== null);
+  }
+
+  function rowTextIndex(row, snippetMap) {
+    const parts = [String(row.course_id||""), String(row.file||"")];
+    const sn = snippetMap.get(String(row.course_id)) || "";
+    parts.push(sn);
+    return parts.join(" ").toLowerCase();
+  }
+
+  async function loadAll() {
+    const base = parseCSV(await fetchText("data/course_grading.csv"));
+    let override = [];
+    try { override = parseCSV(await fetchText("data/override.csv")); } catch(e) { override = []; }
+    const merged = mergeBaseAndOverride(base, override);
+
+    // 读取 OCR 片段（从 data/merged/course_X.txt）
+    const snippetMap = new Map();
+    for (const r of merged) {
+      const id = String(r.course_id);
+      const path = `data/merged/course_${id}.txt`;
+      try {
+        const full = await fetchText(path);
+        const sn = full.replace(/\s+/g," ").trim().slice(0, 120);
+        snippetMap.set(id, sn);
+      } catch(e) {
+        snippetMap.set(id, "（未找到 data/merged/course_"+id+".txt）");
+      }
+    }
+
+    return {merged, snippetMap};
+  }
+
+  function applyAndRender(state) {
+    const q = $("q").value.trim().toLowerCase();
+    const itemKey = $("item").value;
+    const threshold = Number($("th").value);
+    const showMode = $("show").value;
+
+    const rows = state.merged.filter(r => {
+      // showMode 逻辑：all -> 永远显示；only_with_any -> 必须有任意占比
+      if (showMode === "only_with_any" && !anyPct(r)) return false;
+
+      // 搜索
+      const idx = rowTextIndex(r, state.snippetMap);
+      if (q && !idx.includes(q)) return false;
+
+      // 阈值匹配逻辑：
+      // - 如果 itemKey=all：只要有任意一项 >= threshold 就算匹配；但仍然显示全部课程时不应隐藏行
+      // - 为了“显示全部课程”也能看到 5 条，我们只把阈值用于 chip 展示，不用于隐藏（除非你选 only_with_any）
+      if (showMode === "only_with_any") {
+        if (itemKey === "all") {
+          const ok = LABELS.some(([k,_]) => (r[k] !== null && r[k] >= threshold));
+          if (!ok) return false;
+        } else {
+          const v = r[itemKey];
+          if (v === null || v < threshold) return false;
+        }
+      }
+
+      return true;
+    });
+
+    $("loadedN").textContent = String(state.merged.length);
+    $("matchN").textContent = String(rows.length);
+
+    const tbody = $("tbody");
+    tbody.innerHTML = "";
+
+    for (const r of rows) {
+      const id = String(r.course_id);
+      const chipsHTML = buildChips(r, threshold, itemKey);
+      const chipsOrEmpty = chipsHTML ? `<div class="chips">${chipsHTML}</div>` : `<span class="muted">（暂无占比字段解析）</span>`;
+      const sn = state.snippetMap.get(id) || "";
+
+      const tr = document.createElement("tr");
+      tr.className = "data";
+      tr.innerHTML = `
+        <td class="cid"><span class="badge">${id}</span></td>
+        <td>${chipsOrEmpty}</td>
+        <td>
+          <div><a class="filelink" href="data/merged/course_${id}.txt" target="_blank">course_${id}.txt</a></div>
+          <div class="snippet">${sn}</div>
+        </td>
+      `;
+      tr.addEventListener("click", async () => {
+        $("detail").open = true;
+        const path = `data/merged/course_${id}.txt`;
+        try {
+          const full = await fetchText(path);
+          $("fulltext").textContent = full;
+        } catch(e) {
+          $("fulltext").textContent = `读取失败：${path}\n${String(e)}`;
+        }
+      });
+      tbody.appendChild(tr);
+    }
+  }
+
+  let STATE = null;
+
+  async function boot() {
+    $("reload").disabled = true;
+    $("reload").textContent = "加载中…";
+    try {
+      STATE = await loadAll();
+      applyAndRender(STATE);
+    } catch(e) {
+      alert("加载失败："+String(e));
+      console.error(e);
+    } finally {
+      $("reload").disabled = false;
+      $("reload").textContent = "重新加载";
+    }
+  }
+
+  $("reload").addEventListener("click", boot);
+  $("reset").addEventListener("click", () => {
+    $("q").value = "";
+    $("item").value = "all";
+    $("th").value = "0";
+    $("show").value = "all";
+    applyAndRender(STATE);
+  });
+
+  ["q","item","th","show"].forEach(id => {
+    $(id).addEventListener("input", () => STATE && applyAndRender(STATE));
+    $(id).addEventListener("change", () => STATE && applyAndRender(STATE));
+  });
+
+  boot();
+</script>
+</body>
+</html>
