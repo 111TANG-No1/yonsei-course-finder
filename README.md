@@ -1,3 +1,19 @@
+## Live Demo (GitHub Pages)
+
+- Demo: https://111tang-no1.github.io/yonsei-course-finder/
+- Data source: `docs/data/course_grading.csv` + `docs/data/override.csv`
+- What you can do:
+  - View all courses and extracted grading breakdown
+  - Filter by assessment item & threshold
+  - View OCR snippet / full OCR text by clicking a row
+
+## How to run locally
+
+```bash
+cd ~/Projects/yonsei-course-finder
+python -m http.server 8010
+# open http://localhost:8010/web.html
+
 # Yonsei Course Finder (OCR Demo)
 
 把延世大学选课系统里“课程计划/考核方式”截图做 OCR → 提取考核占比（期中/期末/作业/出勤/团队项目…）→ 用一个网页快速筛选出符合你偏好的课程。
