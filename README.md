@@ -1,3 +1,11 @@
+## Demo Screenshots
+
+**Overview (filter + parsed grading + OCR snippet)**
+![Overview](docs/assets/01_overview.png)
+
+**Expand row to view OCR full text**
+![OCR Full Text](docs/assets/02_expand_ocr_fulltext.png)
+
 ## Live Demo (GitHub Pages)
 
 - Demo: https://111tang-no1.github.io/yonsei-course-finder/
