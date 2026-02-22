@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head>
+<title>Report</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="./css/clipreport5.css">
+<link rel="stylesheet" type="text/css" href="./css/UserConfig5.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+<style type="text/css">
+
+
+</style>
+
+<script type="text/javascript" src="./js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="./js/clipreport5.js"></script>
+<script type="text/javascript" src="./js/UserConfig5.js"></script>
+
+<script type="text/javascript">
+var urlPath = document.location.protocol + "//" + document.location.host;
+function html2xml(divPath) {
+    var report = createJSPReport("./ClipTo.jsp", "./reportTo.jsp", "reportParams=U2FsdGVkX18NOPp7FFbJS6MN1%2Fkym5QQKDMhDbUWRVJLW%2BfXT0JqOdCPvyzTI8rh4Ri2x9VH9KiCWh%2B48xALxxZwWMZEqaW3iHqQW7P0dYr7s%2FoGDeuRsIu7moyigChDjHTgst%2BnvGqO9oZSwEwm8e1pbe0qsSzr6VSWI2uTuFz6IU56DXTriU3PQ0Z3xMouSQwsJkRNtptGQ8Fx0GPj0KpZRtZ413N19WxjXxz1Oq6OI0dibIobior05iTXYXpdLIEHxdHf3qIp%2FQNkU92GBIvA4zaHSSZ9bqjgXGj4cB1FrdxUi%2FL5%2FOA4jMlGQBfOeCFIWKrCo3PEaafuoasHuB6ESP34kvKnRU9T3JMVfHURtyCvrXOQVWXVXD%2B8pybbfvmtMZjHqioNufirDNj7NI5nDz1PN0zAk0FD79PdYJVa6nILV9FGjhfWrCM8haBPuWA4Kuv%2F98t9mnWQdc2jOH%2BUX%2BSS8RFXMD7Dlks3%2BdrcRGPdTUKoT2BWCF6hhO8eTueyiP95%2BzD0KqYfBuQN%2BNAdcwFe2xp8a13s%2F68gpB0fQX%2Boroul906NGepg%2BquHnZSIhHmfoddGbU%2FrIT7Y0WsPst%2FjrnpwBeTL5g337KiLu5hYaJQNpb6B1Nhmq%2Fp6aua7dTSbcqTUGsXWO8YIQYlrUZ0e%2Ftg97PDf4%2Fb8mhr3jEoOorNrPteS0lZzQnG8x3RPprLJlMm893bssyBsatWlMMohCVZuVPToobrUQiwuFMdjuLYIFHhwOGbPsSWbBkiSOe%2FsKeY1IqGi0tlbBj9NwUjrYWnwGEgJinUNH8qeeKJoCQZEaGJwctrE%2BLJbTi21Mn6NfLUYgctiHxabHrM5vTmCGluLLyF4jorAdJIIREFGjwNw4Ypo3FCZeLrN3JqSst1w0jpR3YaxodMK99dsY4kn7VBh38EcxbzdvInC4vBf4V6rp0JJC9kYjPtks%2BlIk7QNSdW3%2Fsau%2BpyIiqfgnHYJWaWO3qf1G8WXFCa%2BdX73w%2FOJRcd2rbDVkBx%2BbMgv9czSs4PlsHwC3q%2BaMD3OOm7SVT9bejns4YT7%2FsbzwKA%2BkO6DeJuvESHUKbAnNBDBgKZ%2F4lYZ6ydKwREX%2Bw5rKfDSNeXNvqKCwYnkqpxHZ0yAOt6zkXV0daJIVt%2BK7gt23y6fiXTCiAVldM2llsMcQ%2BUw7XVALyMjDiTRh23GMNBuB7dbzdRzLiCby8ZutIByvIZu5%2FsXK4RfHUiMNcsHON1ybRiaWh0gSI8D%2Bcltkk4qhdTkHTKqJqLv5T%2B9c96gI1WqNAs3rxZ3cltoOFP6tj9vKpiBh3JEksq1kwpfKZFbMnJycFSvvgyqhwttvWWxbBtIEhLy9l3EWfXOtg%3D%3D&paramType=query&filePath=sch%2Fsles%2Fslessy%2Fslessy0020_prn03.crf&useGlio=false&dbName=YI3&isPrivacy=false&privacyUserColumn=" ,document.getElementById(divPath));
+
+    console.log(report);
+
+    //리포트 생성 후 버튼 생성 이벤트
+    report.setEndReportEvent(function(){
+        //addButton();
+    });
+    report.setCloseReportEvent(function(){
+        if(window.opener){
+            window.close();
+        }
+    });
+    report.setReportDirectPrintButton(true,0);
+    //report.setScrollView(false);
+
+    
+        report.setStyle("save_button", "visibility: hidden");
+        report.setStyle("print_button", "visibility: hidden");
+
+    
+        report.setStyle("print_button", "visibility: visible");
+    
+
+    
+        report.setSaveOptionVisible("xls", false);
+        report.setSaveOptionVisible("xlsx", false);
+        report.setSaveOptionVisible("pdf", false);
+        report.setSaveOptionVisible("hwp", false);
+        report.setSaveOptionVisible("doc", false);
+        report.setSaveOptionVisible("docx", false);
+        report.setSaveOptionVisible("ppt", false);
+        report.setSaveOptionVisible("pptx", false);
+        report.setSaveOptionVisible("show", false);
+        report.setSaveOptionVisible("cell", false);
+
+    
+            report.setSaveOptionVisible("xls", true);
+            report.setSaveOptionVisible("xlsx", true);
+    
+    
+            report.setSaveOptionVisible("pdf", true);
+    
+    
+            report.setSaveOptionVisible("hwp", true);
+    
+    
+            report.setSaveOptionVisible("doc", true);
+            report.setSaveOptionVisible("docx", true);
+    
+    
+            report.setSaveOptionVisible("ppt", true);
+            report.setSaveOptionVisible("pptx", true);
+    
+    
+            report.setSaveOptionVisible("show", true);
+    
+    
+            report.setSaveOptionVisible("cell", true);
+    
+    
+
+    var userPassword = "";
+
+
+    // 엑셀 저장 옵션 조정
+    report.setDefaultSaveExcelOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, 600);
+    report.setDefaultSaveExcelxOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, userPassword, 600);
+    // report.setDefaultSaveHanCellOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, userPassword, 600);
+
+	// docx파일 저장옵션
+	// splitTextLine
+	// {Boolean} 문자열을 여러 줄로 나누어 표현
+	// processAsUnicode
+	// {Boolean} 유니코드로 문자열을 처리
+	// processEqualAlign
+	// {Integer} 1 = 왼쪽 정렬 2 = 가운데 정렬 3 = 오른쪽 정렬 4 = 양쪽 정렬
+	// defaultCharSpace
+	// {Double} 기본 자간
+	// tableWrapperBottomGap
+	// {Integer} 표를 감싸는 객체의 아래쪽 여백
+	// insertTableWrapper
+	// {Boolean} 테이블을 감싸는 객체를 삽입할 것인지 여부
+	// mergeTable
+	// {Boolean} 이웃한 테이블과 병합할 것인지 여부
+	// lineSpaceRate
+	// {Integer} 줄간격비율
+	// easyEditable
+	// {Boolean} 간편 편집용
+	// userPassword
+	// {String} 문서암호
+	// TableRowHeightSort
+	// {Integer} 표의 행높이 설정 1 = 고정 2 = 최소(워드에서 표 셀의 글자를 넣으면 셀이 늘어남)
+
+	//insertTableWrapper를 true로 할경우 마지막 선이 안보이는 문제가 있어서 false로 변경
+    //report.setDefaultSaveDOCXOption(true, false, 4, -0.5, 0, true, false, 100,false, userPassword);
+    report.setDefaultSaveDOCXOption(true, false, 4, -0.5, 0, false, false, 100,false, userPassword);
+
+    //report.setDefaultSaveHanShowOption(false, false, false, 0, 0, false, userPassword);
+    report.setDefaultSavePPTXOption(false, false, false, 0, 0, false, userPassword);
+    report.setDefaultSavePDFOption(userPassword, false, false, false, true);
+
+
+    // userPassword 사용시 문서암호 가능한 문서종류만 보이도록 처리
+    if(!!userPassword) {
+        report.setSaveOptionVisible("xls", false);
+        report.setSaveOptionVisible("hwp", false);
+        report.setSaveOptionVisible("doc", false);
+        report.setSaveOptionVisible("ppt", false);
+        report.setSaveOptionVisible("show", false);
+        report.setSaveOptionVisible("cell", false);
+    }
+
+    // 배율 설정
+    //,{name:"PageWidth",text:"pageWidth",value:"pageWidth",visible:true},{name:"WholePage",text:"wholePage",value:"pageHeight",visible:true}
+    var ratioValue = [{name:"75%",text:"75%",value:"0.75",visible:true}
+                     ,{name:"100%",text:"100%",value:"1",visible:true}
+                     ,{name:"125%",text:"125%",value:"1.25",visible:true}
+                     ,{name:"150%",text:"150%",value:"1.5",visible:true}
+                     ,{name:"175%",text:"175%",value:"1.75",visible:true}
+                     ,{name:"200%",text:"200%",value:"2",visible:true}
+                     ];
+    report.setRatioComboAllChange(ratioValue);
+
+
+
+    report.setDefaultRatio("100%");
+    // 리포트 형식.  0 : svg, 1 : doc ->svg, 2 : canvas
+    //report.setScrollView(true);
+    //report.setViewType(1);
+
+
+
+    
+
+    //리포트 뷰어 실행
+    report.view();
+}
+setTimeout(function() {
+	html2xml('targetBody1');
+}, 900);
+</script>
+</head>
+<body id="targetBody1">
+    <span style="visibility: hidden; font-family:나눔고딕">.</span>
+    <span style="visibility: hidden; font-family:NanumGothic">.</span>
+
+</body></html>

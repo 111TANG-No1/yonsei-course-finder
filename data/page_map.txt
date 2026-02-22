@@ -1,0 +1,5 @@
+course_1 <- plan_1_p2  (10% 出现；p3为说明备份)
+course_2 <- plan_2_p1  (只生成了p1)
+course_3 <- plan_3_p3  (出现 7% / 16%)
+course_4 <- plan_4_p1  (检测到 100%)
+course_5 <- plan_5_p1  (相对最可信)

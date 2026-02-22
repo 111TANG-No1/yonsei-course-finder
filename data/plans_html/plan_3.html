@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head>
+<title>Report</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="./css/clipreport5.css">
+<link rel="stylesheet" type="text/css" href="./css/UserConfig5.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+<style type="text/css">
+
+
+</style>
+
+<script type="text/javascript" src="./js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="./js/clipreport5.js"></script>
+<script type="text/javascript" src="./js/UserConfig5.js"></script>
+
+<script type="text/javascript">
+var urlPath = document.location.protocol + "//" + document.location.host;
+function html2xml(divPath) {
+    var report = createJSPReport("./ClipTo.jsp", "./reportTo.jsp", "reportParams=U2FsdGVkX1%2FAFppL3wLJKcqJYjcqJUseIZ9FHiba6JzlYr6r%2BGowbzUAVrRithmBbQ%2BXxAtGAVUJFr1OiNZcziRDF%2FNCdWu15UOLKwHtrbUNVWGUAmGDIODWnq0vBlrAIYROvF%2F%2By%2FGrFc7vMEQfzBjJtTXFh7GZIVZAWDZHWDEhfKKw53Vg9OZmKGctSgLEjH5q%2Fc5wDgYFJM7RAfuf0dvCzAtbxagSrl%2FrCxhD9Sm4o3AQldoj6z8DJgORzfCvH5N8OHbxr3F7oOcVqEe3yEngNYq39wj%2F3X4CjgLQdCSRjkBUjZnN7UyoK2dYX6oeOEliA8jMzY2H1NHgirPNgDBP1Z4Y4k26m1Vo0pzEgg60Kjk%2Bkh9z8Nu75bJMdIKVycGn81zDoqj4wx2NKcM1eQnzwv2sqAvLwftnIbREe01kHWelFEuAvJq%2B3LexjmC3JthwRWhrQ1WMuZ%2B2%2Fc2glF2VdlqjSswTNs%2BFz%2BSfdydBsenfiO5U4lsE0YOufPXnZyNPtrAA8QzgO4wxhWVU%2FsOYTl1Di4pDqRCWJhwiLxypXRYkxu9OQjcV1xMtJM%2Fq5NEUNZPmZgsC1pB%2F6PePZtj8uVL4QO0SoeSLGfONgMSSgf7NXMY7v%2FL0e1jDHr8sKIwzIsuQQnttf5pICyhhK2GnV%2FKNTBayiWfKgQKi9RgfTmurD76882JSkawU9ZQxHbTBDpzpGpThVqEFKd46JHSGw8Xvfs%2FhczaQ8z03fM4pBT7htqMhmhGujRuUz5TbBaEZeo2kNdWDcXUm1XWjhVLFQBGD1AOHaY517RaMPPtUyKtkxBlDVdYbxjWgljrKUsZytHYWah5M1tWrKYbWSr3GL8ABnP2u29RxAAXobdvY9%2F5wHFv9SzGKqRB5w4rhQDVV9NcmR%2F%2BUZOiyM7tcgIeI0ZxToWd9%2Fwua5J5enajrLl7fHD04AwZk5K0ohCWBK0Ipq5qOMeiO1fOoGwkOK%2Bg%2FwNeWyUw25XMvyBfNdgo%3D&paramType=query&filePath=sch%2Fsles%2Fslessy%2Fslessy0020_prn03.crf&useGlio=false&dbName=YI3&isPrivacy=false&privacyUserColumn=" ,document.getElementById(divPath));
+
+    console.log(report);
+
+    //리포트 생성 후 버튼 생성 이벤트
+    report.setEndReportEvent(function(){
+        //addButton();
+    });
+    report.setCloseReportEvent(function(){
+        if(window.opener){
+            window.close();
+        }
+    });
+    report.setReportDirectPrintButton(true,0);
+    //report.setScrollView(false);
+
+    
+        report.setStyle("save_button", "visibility: hidden");
+        report.setStyle("print_button", "visibility: hidden");
+
+    
+        report.setStyle("print_button", "visibility: visible");
+    
+
+    
+        report.setSaveOptionVisible("xls", false);
+        report.setSaveOptionVisible("xlsx", false);
+        report.setSaveOptionVisible("pdf", false);
+        report.setSaveOptionVisible("hwp", false);
+        report.setSaveOptionVisible("doc", false);
+        report.setSaveOptionVisible("docx", false);
+        report.setSaveOptionVisible("ppt", false);
+        report.setSaveOptionVisible("pptx", false);
+        report.setSaveOptionVisible("show", false);
+        report.setSaveOptionVisible("cell", false);
+
+    
+            report.setSaveOptionVisible("xls", true);
+            report.setSaveOptionVisible("xlsx", true);
+    
+    
+            report.setSaveOptionVisible("pdf", true);
+    
+    
+            report.setSaveOptionVisible("hwp", true);
+    
+    
+            report.setSaveOptionVisible("doc", true);
+            report.setSaveOptionVisible("docx", true);
+    
+    
+            report.setSaveOptionVisible("ppt", true);
+            report.setSaveOptionVisible("pptx", true);
+    
+    
+            report.setSaveOptionVisible("show", true);
+    
+    
+            report.setSaveOptionVisible("cell", true);
+    
+    
+
+    var userPassword = "";
+
+
+    // 엑셀 저장 옵션 조정
+    report.setDefaultSaveExcelOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, 600);
+    report.setDefaultSaveExcelxOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, userPassword, 600);
+    // report.setDefaultSaveHanCellOption(3, true, false, true, false, 100, 100, 10, 1, 100, false, false, false, userPassword, 600);
+
+	// docx파일 저장옵션
+	// splitTextLine
+	// {Boolean} 문자열을 여러 줄로 나누어 표현
+	// processAsUnicode
+	// {Boolean} 유니코드로 문자열을 처리
+	// processEqualAlign
+	// {Integer} 1 = 왼쪽 정렬 2 = 가운데 정렬 3 = 오른쪽 정렬 4 = 양쪽 정렬
+	// defaultCharSpace
+	// {Double} 기본 자간
+	// tableWrapperBottomGap
+	// {Integer} 표를 감싸는 객체의 아래쪽 여백
+	// insertTableWrapper
+	// {Boolean} 테이블을 감싸는 객체를 삽입할 것인지 여부
+	// mergeTable
+	// {Boolean} 이웃한 테이블과 병합할 것인지 여부
+	// lineSpaceRate
+	// {Integer} 줄간격비율
+	// easyEditable
+	// {Boolean} 간편 편집용
+	// userPassword
+	// {String} 문서암호
+	// TableRowHeightSort
+	// {Integer} 표의 행높이 설정 1 = 고정 2 = 최소(워드에서 표 셀의 글자를 넣으면 셀이 늘어남)
+
+	//insertTableWrapper를 true로 할경우 마지막 선이 안보이는 문제가 있어서 false로 변경
+    //report.setDefaultSaveDOCXOption(true, false, 4, -0.5, 0, true, false, 100,false, userPassword);
+    report.setDefaultSaveDOCXOption(true, false, 4, -0.5, 0, false, false, 100,false, userPassword);
+
+    //report.setDefaultSaveHanShowOption(false, false, false, 0, 0, false, userPassword);
+    report.setDefaultSavePPTXOption(false, false, false, 0, 0, false, userPassword);
+    report.setDefaultSavePDFOption(userPassword, false, false, false, true);
+
+
+    // userPassword 사용시 문서암호 가능한 문서종류만 보이도록 처리
+    if(!!userPassword) {
+        report.setSaveOptionVisible("xls", false);
+        report.setSaveOptionVisible("hwp", false);
+        report.setSaveOptionVisible("doc", false);
+        report.setSaveOptionVisible("ppt", false);
+        report.setSaveOptionVisible("show", false);
+        report.setSaveOptionVisible("cell", false);
+    }
+
+    // 배율 설정
+    //,{name:"PageWidth",text:"pageWidth",value:"pageWidth",visible:true},{name:"WholePage",text:"wholePage",value:"pageHeight",visible:true}
+    var ratioValue = [{name:"75%",text:"75%",value:"0.75",visible:true}
+                     ,{name:"100%",text:"100%",value:"1",visible:true}
+                     ,{name:"125%",text:"125%",value:"1.25",visible:true}
+                     ,{name:"150%",text:"150%",value:"1.5",visible:true}
+                     ,{name:"175%",text:"175%",value:"1.75",visible:true}
+                     ,{name:"200%",text:"200%",value:"2",visible:true}
+                     ];
+    report.setRatioComboAllChange(ratioValue);
+
+
+
+    report.setDefaultRatio("100%");
+    // 리포트 형식.  0 : svg, 1 : doc ->svg, 2 : canvas
+    //report.setScrollView(true);
+    //report.setViewType(1);
+
+
+
+    
+
+    //리포트 뷰어 실행
+    report.view();
+}
+setTimeout(function() {
+	html2xml('targetBody1');
+}, 900);
+</script>
+</head>
+<body id="targetBody1">
+    <span style="visibility: hidden; font-family:나눔고딕">.</span>
+    <span style="visibility: hidden; font-family:NanumGothic">.</span>
+
+</body></html>
