@@ -735,9 +735,9 @@ footer a:hover { color: var(--accent); }
         <p>// grading breakdown · workload signals · AI-assisted search</p>
       </div>
       <div class="header-badges">
-        <span class="pill pill-green"><span class="dot"></span>100 courses indexed</span>
+        <span class="pill pill-green"><span class="dot"></span>36 courses indexed</span>
         <span class="pill pill-blue">연세대학교</span>
-        <span class="pill pill-amber">경제대학원등</span>
+        <span class="pill pill-amber">GSIS · 경제대학원</span>
       </div>
     </div>
   </div>
@@ -781,8 +781,6 @@ footer a:hover { color: var(--accent); }
             <label class="field-label">School</label>
             <select id="filterSchool" onchange="onSchoolChange()">
               <option value="all">All schools</option>
-              <option value="GSIS">GSIS — Graduate School of Int'l Studies</option>
-              <option value="경제대학원">경제대학원 — Graduate School of Economics</option>
             </select>
           </div>
           <div>
@@ -1007,10 +1005,6 @@ const COURSES = [
   { id:94, school:'기계공학과', program:'기계공학과', code:'MEU6340-01-00', name:'제조 정밀공학', midterm:0,  final:50, assignment:0,  quiz:40, attendance:0,  team_project:10, other:0 },
   { id:95, school:'기계공학과', program:'기계공학과', code:'MEU7030-01-00', name:'멀티피직스', midterm:40, final:0,  assignment:0,  quiz:15, attendance:0,  team_project:5, other:0 },
   { id:96, school:'기계공학과', program:'기계공학과', code:'MEU2630-01-00', name:'선진생산 공정소재', midterm:30, final:35, assignment:0,  quiz:35, attendance:0,  team_project:25, other:0 },
-  { id:97, school:'기계공학과', program:'기계공학과', code:'MEU7610-01-00', name:'마찰학응용', midterm:25, final:25, assignment:40,  quiz:0, attendance:10,team_project:10, other:0 },
-  { id:98, school:'기계공학과', program:'기계공학과', code:'MEU7031-01-00', name:'탄성이론', midterm:40,  final:40, assignment:15,  quiz:0, attendance:5, team_project:0, other:0 },
-  { id:99, school:'기계공학과', program:'기계공학과', code:'MEU5044-01-00', name:'첨단 나노제작 기술', midterm:40, final:40, assignment:0,  quiz:0, attendance:5,  team_project:15, other:0 },
-  { id:100, school:'기계공학과', program:'기계공학과', code:'MEU5051-01-00', name:'정밀생산시스템', midterm:0, final:0, assignment:100,  quiz:0, attendance:0,  team_project:0, other:0 },
 ];
 
 // Program labels for display
@@ -1086,6 +1080,31 @@ let filterThreshold = 0;
 let aiFilterIds = null;
 
 // Cascading school → program filter
+
+const SCHOOL_LABELS = {
+  'GSIS': "GSIS — Graduate School of Int'l Studies",
+  '경제대학원': '경제대학원 — Graduate School of Economics',
+  '사학과': '사학과 — Dept. of History',
+  '인공지능학과': '인공지능학과 — Dept. of AI',
+  '약학과': '약학과 — College of Pharmacy',
+  '컴퓨터과학과': '컴퓨터과학과 — Dept. of Computer Science',
+  '법학과': '법학과 — Dept. of Law',
+  '화공생명공학과': '화공생명공학과 — Dept. of Chemical Engineering',
+  '기계공학과': '기계공학과 — Dept. of Mechanical Engineering',
+};
+
+
+// Populate school dropdown dynamically
+function populateSchoolDropdown() {
+  const sel = document.getElementById('filterSchool');
+  Object.keys(SCHOOL_PROGRAMS).forEach(school => {
+    const opt = document.createElement('option');
+    opt.value = school;
+    opt.textContent = SCHOOL_LABELS[school] || school;
+    sel.appendChild(opt);
+  });
+}
+
 function onSchoolChange() {
   filterSchool = document.getElementById('filterSchool').value;
   filterProgram = 'all';
@@ -1379,6 +1398,7 @@ Rules: "no team project"=team_project=0, "exam heavy"=mid+fin>=50, "low exam"=mi
   document.getElementById('aiSend').disabled = false;
 }
 
+populateSchoolDropdown();
 render();
 </script>
 </body>
